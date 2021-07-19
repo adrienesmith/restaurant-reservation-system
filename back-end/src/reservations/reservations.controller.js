@@ -49,13 +49,13 @@ async function dateHasReservations(req, res, next) {
 // list reservations by date
 async function list(req, res) {
   const { date } = res.locals;
-  res.json({ date });
+  res.json({ data: date });
 }
 
 // creates a reservation
 async function create(req, res) {
-  const data = await service.create(req.body.data);
-  res.status(201).json({ data });
+  const reservation = await service.create(req.body.data);
+  res.status(201).json({ data: reservation });
 }
 
 module.exports = {

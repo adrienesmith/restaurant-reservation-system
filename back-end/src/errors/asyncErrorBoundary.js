@@ -1,4 +1,6 @@
-// error handling for async / await functions in controllers
+/**
+ * error handling for async / await functions in controllers
+ */ 
 
 function asyncErrorBoundary(delegate, defaultStatus) {
     return (req, res, next) => {
