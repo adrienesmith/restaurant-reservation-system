@@ -3,7 +3,6 @@
 function hasProperties(...properties) {
     return function (req, res, next) {
         const { data = {} } = req.body;
-        console.log("data", data)
         try {
             properties.forEach((property) => {
                 if (!data[property]) {
