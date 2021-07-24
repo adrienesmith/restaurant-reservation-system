@@ -4,6 +4,7 @@ const hasProperties = require("../errors/hasProperties");
 const hasOnlyValidProperties = require("../errors/hasOnlyValidProperties");
 const reservationService = require("../reservations/reservations.service");
 
+
 const VALID_PROPERTIES_POST = [
     "table_name",
     "capacity",
@@ -59,14 +60,19 @@ async function tableExists(req, res, next) {
 async function reservationExists(req, res, next) {
     const { reservation_id } = req.body.data;
     const data = await reservationService.read(reservation_id);
-    if (data) {
-      res.locals.reservation = data;
-      return next();
+    if (data && data.status !== "seated") {
+        res.locals.reservation = data;
+        return next();
+    } else if (data && data.status === "seated") {
+        return next({
+            status: 400,
+            message: `reservation_id: ${reservation_id} is already seated.`,
+        });
     } else {
-      return next({
-        status: 404,
-        message: `reservation_id: ${reservation_id} does not exist.`
-      });
+        return next({
+            status: 404,
+            message: `reservation_id: ${reservation_id} does not exist.`,
+        });
     }
 }
 
@@ -124,7 +130,7 @@ async function create(req, res) {
 // seat a reservation at a table
 async function seat(req, res) {
     const { table } = res.locals;
-    const { reservation_id } = req.body.data;
+    const { reservation_id } = res.locals.reservation;
     const { table_id } = req.params;
     const updatedTableData = {
         ...table,
@@ -133,6 +139,12 @@ async function seat(req, res) {
         status: "Occupied",
     }
     const updatedTable = await service.seat(updatedTableData);
+    // set reservation status to "seated" using reservation id
+    const updatedReservation = {
+        status: "seated", 
+        reservation_id: reservation_id,
+    }
+    await reservationService.update(updatedReservation);
     res.json({ data: updatedTable });
 }
 
@@ -145,6 +157,12 @@ async function finish(req, res) {
         status: "Free"
     }
     const updatedTable = await service.finish(updatedTableData);
+    // set reservation status to "finished" using reservation id
+    const updatedReservation = {
+        status: "finished", 
+        reservation_id: table.reservation_id,
+    }
+    await reservationService.update(updatedReservation); 
     res.json({ data: updatedTable });
 }
 
