@@ -268,13 +268,13 @@ describe("US-06 - Reservation status", () => {
 
       const reservationsResponse = await request(app)
         .get(
-//          `/reservations?date=${asDateString(reservationOne.reservation_date)}`
+        //`/reservations?date=${asDateString(reservationOne.reservation_date)}`
         `/reservations?date=${reservationOne.reservation_date}`
 
         )
         .set("Accept", "application/json");
 
-      console.log(reservationOne.reservation_date, asDateString(reservationOne.reservation_date))
+      console.log("reservation date", reservationOne.reservation_date, "asDateString", asDateString(reservationOne.reservation_date))
 
       expect(reservationsResponse.body.error).toBeUndefined();
 
@@ -288,7 +288,9 @@ describe("US-06 - Reservation status", () => {
 });
 
 function asDateString(date) {
+  // I added in the newDate constant, so the tests are passed a date object rather than a date string
   const newDate = new Date(date)
+  console.log("date", date, "newDate", newDate)
   return `${newDate.getFullYear().toString(10)}-${(newDate.getMonth() + 1)
     .toString(10)
     .padStart(2, "0")}-${newDate.getDate().toString(10).padStart(2, "0")}`;

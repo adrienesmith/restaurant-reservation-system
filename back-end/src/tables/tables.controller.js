@@ -30,8 +30,7 @@ function tableNameLength(req, res, next) {
 // validation middleware: checks that capacity is a number
 function capacityIsNumber(req, res, next) {
     const { capacity } = req.body.data;
-    const tableCapacity = Number.isInteger(capacity);
-    if (tableCapacity) {
+    if (!isNaN(capacity)) {
         return next();
     } else {
         return next({

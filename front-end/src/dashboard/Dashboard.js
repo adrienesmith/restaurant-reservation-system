@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import Reservations from "../reservations/Reservations";
+import Tables from "../tables/Tables";
 import { previous, next, today } from "../utils/date-time";
 import { Link } from "react-router-dom";
 import useQuery from "../utils/useQuery";
@@ -21,7 +22,8 @@ function Dashboard({ date }) {
   }
 
   const [reservations, setReservations] = useState([]);
-  const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
+  const [dashboardError, setDashboardError] = useState([]);
 
   // load the reservations by date
   useEffect(() => {
@@ -29,19 +31,35 @@ function Dashboard({ date }) {
 
     async function loadDashboard() {
       try {
-        setReservationsError(null);
-        const response = await listReservations({ date }, abortController.signal);
-        setReservations(response);
+        setDashboardError([]);
+        const reservationDate = await listReservations({ date }, abortController.signal);
+        setReservations(reservationDate);
       } catch (error) {
         setReservations([]);
-        setReservationsError(error);
+        setDashboardError([error.message]);
       }
     }
     loadDashboard();
     return () => abortController.abort();
   }, [date]);
 
-  console.log("what is date", date)
+  // load all tables
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    async function loadTables() {
+      try {
+        setDashboardError([]);
+        const tableList = await listTables(abortController.signal);
+        setTables(tableList);
+      } catch (error) {
+        setTables([]);
+        setDashboardError([error.message]);
+      }
+    }
+    loadTables();
+    return () => abortController.abort();
+  }, []);
 
    return (
     <main>
@@ -60,8 +78,10 @@ function Dashboard({ date }) {
           </Link>
         </div>
       </div>
-      <ErrorAlert error={reservationsError} />
+      <ErrorAlert error={dashboardError} />
       <Reservations reservations={reservations} />
+      <h2>Tables</h2>
+      <Tables tables={tables}/>
     </main>
   );
 }

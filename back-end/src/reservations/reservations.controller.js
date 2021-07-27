@@ -65,8 +65,8 @@ function peopleIsNumber(req, res, next) {
 // validation middleware: checks that the reservation_date & reservation_time are not in the past
 function notInPast(req, res, next) {
   const { reservation_date, reservation_time } = req.body.data;
-  const reservation = new Date(reservation_date).setHours(reservation_time.substring(0, 2), reservation_time.substring(3));
-  const now = new Date().getTime();
+  const reservation = new Date(`${reservation_date} PDT`).setHours(reservation_time.substring(0, 2), reservation_time.substring(3));
+  const now = Date.now();
   if (reservation > now) {
     return next();
   } else {
@@ -82,8 +82,8 @@ function notInPast(req, res, next) {
 function notTuesday(req, res, next) {
   const { reservation_date } = req.body.data;
   const date = new Date(reservation_date);
-  const day = date.getDay();
-  if (day === 1) {
+  const day = date.getUTCDay();
+  if (day === 2) {
     return next({
       status: 400,
       message: "The restaurant is closed on Tuesday.",
@@ -248,7 +248,7 @@ module.exports = {
     hasOnlyValidProperties(...VALID_PROPERTIES), 
     dateIsValid,
     timeIsValid,
-    peopleIsNumber,
+    //peopleIsNumber,
     notTuesday,
     notInPast,
     duringOperatingHours,

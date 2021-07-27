@@ -14,32 +14,70 @@ export default function ReservationForm() {
     }
 
     const [form, setForm] = useState({...initialFormState});
-    const [reservationsError, setReservationsError] = useState(null);
+    const [reservationsError, setReservationsError] = useState([]);
+   
+    const history = useHistory();
 
     const handleChange = ({ target }) => {
+
+        let name = target.name;
+        let value = target.value;
+                        
+        // check that reservation date is not on a Tuesday and / or not in the past
+        if (name === "reservation_date") {
+            const date = new Date(`${value} PDT`);
+            const reservation = date.getTime();
+            const now = Date.now();
+
+            if (date.getUTCDay() === 2 && reservation < now) {
+                setReservationsError([
+                    "The restaurant is closed on Tuesday.", 
+                    "Reservation must be in the future."
+                ]);
+            } else if (date.getUTCDay() === 2) {
+                setReservationsError(["The restaurant is closed on Tuesday."]);
+            } else if (reservation < now) {
+                setReservationsError(["Reservation must be in the future."]);
+            } else {
+                setReservationsError([]);
+            }
+        }
+
+        // check that reservation time is during open hours
+        if (name === "reservation_time") {
+            const open = 1030;
+            const close = 2130;
+            const reservation = value.substring(0, 2) + value.substring(3);
+            if (reservation > open && reservation < close) {
+                setReservationsError([]);
+            } else {
+                setReservationsError(["Reservations are only allowed between 10:30am and 9:30pm."]);
+            }
+        }
+        // set the form state
         setForm({
             ...form,
             [target.name]: target.value,
         });
     }
 
-    const abortController = new AbortController();
-
     const handleSubmit = (event) => {
         event.preventDefault();
+        const abortController = new AbortController();
+        // POST request
         async function postData() {
             try {
                 await postReservation(form, abortController.signal);
-                history.push("/reservations");
+                history.push(`/dashboard?date=${form.reservation_date}`);
             } catch (error) {
-                setReservationsError(error);
+                setReservationsError([...reservationsError, error.message]);
             }
         }
-        postData();
+        // do not send POST request if there is a pending error message
+        if (reservationsError.length === 0) {
+            postData();
+        }
     }
-
-    const history = useHistory();
-
     return (
             <>
             <ErrorAlert error={reservationsError} />
@@ -75,6 +113,7 @@ export default function ReservationForm() {
                         name="mobile_number"
                         id="mobile_number"
                         placeholder="555-555-5555"
+                        pattern="\d{3}-\d{3}-\d{4}"
                         onChange={handleChange}
                         required="required"
                         value={form.mobile_number}
@@ -86,6 +125,8 @@ export default function ReservationForm() {
                         type="date"
                         name="reservation_date"
                         id="reservation_date"
+                        placeholder="YYYY-MM-DD"
+                        pattern="\d{4}-\d{2}-\d{2}"
                         onChange={handleChange}
                         required="required"
                         value={form.reservation_date}
@@ -97,6 +138,8 @@ export default function ReservationForm() {
                         type="time"
                         name="reservation_time"
                         id="reservation_time"
+                        placeholder="HH:MM"
+                        pattern="[0-9]{2}:[0-9]{2}"
                         onChange={handleChange}
                         required="required"
                         value={form.reservation_time}
@@ -104,27 +147,15 @@ export default function ReservationForm() {
                 </div>
                 <div>
                     <label htmlFor="people">Number of People in Party</label>
-                    <select 
+                    <input 
                         type="text"
                         name="people"
                         id="people"
-                        placeholder="ex. 7"
+                        pattern="[0-9]|[0-9][0-9]"
                         onChange={handleChange}
                         required="required"
                         value={form.people}
-                    >
-                        <option value="">-- Select Party Size --</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
+                    />
                 </div>
                 <button type="submit">Submit</button>
                 <button type="button" onClick={() => history.goBack()}>Cancel</button>

@@ -5,8 +5,10 @@
 import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
-
+const API_BASE_URL = "http://localhost:5000";
+//const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+//const API_BASE_URL = "https://periodic-tables-backend--as.herokuapp.com"
+console.log("current URL", API_BASE_URL)
 /**
  * Defines the default headers for these functions to work with `json-server`
  */
@@ -67,19 +69,52 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
-/**
- * Posts a new reservation to the database
- * @returns {Promise<[{reservation}]>}
- * a promise that resolves to a new reservation array posting to the database
- */
-
+// posts a new reservation to the database
 export async function postReservation(reservation, signal) {
   const url = `${API_BASE_URL}/reservations`;
   const options = {
     method: "POST",
     headers,
-    body: JSON.stringify({data: reservation}),
-    signal
+    body: JSON.stringify({ data: reservation }),
+    signal,
   };
   return await fetchJson(url, options, {})
+}
+
+// posts a new table to the database
+ export async function postTable(table, signal) {
+  const url = `${API_BASE_URL}/tables`;
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({data: table}),
+    signal,
+  };
+  return await fetchJson(url, options, {})
+}
+
+// gets a list of all existing tables in the database
+export async function listTables(signal) {
+  const url = `${API_BASE_URL}/tables`;
+  return await fetchJson(url, { signal });
+}  
+
+// reads a reservation by reservation_id
+export async function readReservation(reservation_id, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}`;
+  return await fetchJson(url, { signal });
+}
+
+// seats a reservation by table_id
+export async function seatTable(table, reservation_id, signal) {
+  const { table_id } = table;
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { reservation_id: reservation_id } }),
+    signal,
+  };
+  console.log(options.body)
+  return await fetchJson(url, options, {});
 }

@@ -3,13 +3,10 @@ import Reservation from "./Reservation";
 
 export default function Reservations({ reservations }) {
 
-    const sort = reservations.sort((a, b) => {
-        return a.reservation_time > b.reservation_time ? 1 : -1;
-    });
-
-    const list = sort.map(reservation => {
+    const list = reservations.map(reservation => {
         return <Reservation 
             key={reservation.reservation_id}
+            reservation_id={reservation.reservation_id}
             first_name={reservation.first_name}
             last_name={reservation.last_name}
             mobile_number={reservation.mobile_number}
