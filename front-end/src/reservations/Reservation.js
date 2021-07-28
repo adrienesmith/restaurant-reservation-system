@@ -28,27 +28,27 @@ export default function Reservation({ reservation_id, first_name, last_name, mob
     }
 
     return (
-        <div>
-            <h3>{`${first_name} ${last_name}`}</h3>
-            <p>Reservation Time: {reservation_time}</p>
-            <p>Party Size: {people}</p>
-            <p>Phone Number: {mobile_number}</p>
+        <div className="card mb-3">
+            <h5 className="card-header">{`${first_name} ${last_name}`}</h5>
+            <div className="card-body">
+            <p>Reservation Time: {reservation_time}<br />
+                Party Size: {people}<br />
+                Phone Number: {mobile_number}</p>
             <p data-reservation-id-status={reservation_id}>Status: {status}</p>
-            <div>
             {!location.pathname.includes("seat") && status === "booked" ? (
                 <Link to={`/reservations/${reservation_id}/seat`}>
-                    <button type="button">Seat</button>
+                    <button className="btn btn-dark" type="button">Seat</button>
                 </Link>
                 ) : null
             }
             {status === "booked" ? (
                 <Link to={`/reservations/${reservation_id}/edit`}>
-                    <button type="button">Edit</button>
+                    <button className="btn btn-dark mx-2" type="button">Edit</button>
                 </Link>
             ) : null
             }
-
                 <button 
+                    className="btn btn-dark"
                     type="button" 
                     onClick={cancelHandler}
                     data-reservation-id-cancel={reservation_id}
@@ -57,6 +57,5 @@ export default function Reservation({ reservation_id, first_name, last_name, mob
                 </button>
             </div>
         </div>
-    )
-
+    );
 }

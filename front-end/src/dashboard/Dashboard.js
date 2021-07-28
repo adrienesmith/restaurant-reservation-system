@@ -25,6 +25,10 @@ function Dashboard({ date }) {
   const [tables, setTables] = useState([]);
   const [dashboardError, setDashboardError] = useState([]);
 
+  // formats the date variable to be human readable
+  const dateObj = new Date(`${date} PDT`);
+  const dateString = dateObj.toDateString();
+
   // load the reservations by date
   useEffect(() => {
     const abortController = new AbortController();
@@ -63,25 +67,44 @@ function Dashboard({ date }) {
 
    return (
     <main>
-      <h1>Dashboard</h1>
+      <div className="headingBar d-md-flex my-3 p-2">
+        <h1>Dashboard</h1>
+      </div>
+      <ErrorAlert error={dashboardError} />
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
+        <h4 className="mb-0">Reservations for {dateString}</h4>
         <div>
           <Link to={`/dashboard?date=${previous(date)}`}>
-            <button type="button">Previous Day</button>
+            <button className="btn btn-dark" type="button">
+              <span className="oi oi-arrow-thick-left" />
+              &nbsp;Previous Day
+            </button>
           </Link>
           <Link to={`/dashboard?date=${today()}`}>
-            <button type="button">Today</button>
+            <button className="btn btn-dark mx-3" type="button">Today</button>
           </Link>
           <Link to={`/dashboard?date=${next(date)}`}>
-            <button type="button">Next Day</button>
+            <button className="btn btn-dark" type="button">
+              Next Day&nbsp;
+              <span className="oi oi-arrow-thick-right" />
+            </button>
           </Link>
         </div>
       </div>
-      <ErrorAlert error={dashboardError} />
-      <Reservations reservations={reservations} />
-      <h2>Tables</h2>
-      <Tables tables={tables}/>
+      <div className="d-md-flex mb-3">
+      <div className="mb-3 mx-3"> 
+        <div className="headingBar my-3 p-2">
+            <h2>Reservations</h2>
+        </div>
+        <Reservations reservations={reservations} />
+        </div>
+        <div className="mb-3 mx-3"> 
+          <div className="headingBar my-3 p-2">
+              <h2>Tables</h2>
+          </div>
+          <Tables tables={tables}/>
+        </div>
+      </div>
     </main>
   );
 }

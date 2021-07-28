@@ -5,7 +5,9 @@ export default function NewTable() {
 
     return (
         <section>
-            <h2>New Table</h2>
+            <div className="headingBar d-md-flex my-3 p-2">
+                <h1>New Table</h1>
+            </div>
             <TableForm />
         </section>
     );

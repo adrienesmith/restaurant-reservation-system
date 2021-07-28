@@ -29,17 +29,16 @@ export default function Table({ table, table_name, capacity, status }) {
     }
 
     return (
-        <div>
+        <div className="card mb-3">
             <ErrorAlert error={finishError} />
-            <h4>Table {table_name}</h4>
-            <p>Capacity: {capacity}</p>
-            <p data-table-id-status={table.table_id}>Status: {status}</p>
-            <div>
-            {status === "Free" ? null : (
-                <button type="button" onClick={finishHandler}>Finish</button>
-            )}
+            <h5 className="card-header">Table {table_name}</h5>
+            <div className="card-body">
+                <p>Capacity: {capacity}</p>
+                <p data-table-id-status={table.table_id}>Status: {status}</p>
+                {status === "Free" ? null : (
+                <button className="btn btn-dark" type="button" onClick={finishHandler}>Finish</button>
+                )}
             </div>
         </div>
-    )
-
+    );
 }

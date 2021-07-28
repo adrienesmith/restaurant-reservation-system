@@ -5,7 +5,9 @@ export default function NewReservation() {
 
     return (
         <section>
-            <h2>New Reservation</h2>
+            <div className="headingBar d-md-flex my-3 p-2">
+                <h1>New Reservation</h1>
+            </div>
             <ReservationForm />
         </section>
     );

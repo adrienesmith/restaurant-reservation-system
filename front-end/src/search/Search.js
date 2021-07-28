@@ -49,7 +49,9 @@ export default function Search() {
 
     return (
         <>
-            <h3>Search by Phone Number</h3>
+            <div className="headingBar d-md-flex my-3 p-2">
+                <h1>Search by Phone Number</h1>
+            </div>
             <ErrorAlert error={searchError} />
             <form onSubmit={handleSubmit}>
                 <div>
