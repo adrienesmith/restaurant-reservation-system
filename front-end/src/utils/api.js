@@ -5,8 +5,8 @@
 import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
-//const API_BASE_URL = "http://localhost:5000";
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = "http://localhost:5000";
+//const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
 //const API_BASE_URL = "https://periodic-tables-backend--as.herokuapp.com"
 console.log("current URL", API_BASE_URL)
 /**
@@ -115,6 +115,46 @@ export async function seatTable(table, reservation_id, signal) {
     body: JSON.stringify({ data: { reservation_id: reservation_id } }),
     signal,
   };
-  console.log(options.body)
+  return await fetchJson(url, options, {});
+}
+
+// finishes a table by table_id
+export async function finishTable(table_id, signal) {
+  const url = `${API_BASE_URL}/tables/${table_id}/seat`;
+  const options = {
+    method: "DELETE",
+    headers,
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+// finds matching reservations by mobile_number
+export async function readByPhone(mobile_number, signal) {
+  const url = `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`;
+  return await fetchJson(url, { signal });
+}
+
+// updates reservation
+export async function putReservation(reservation, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: reservation }),
+    signal,
+  };
+  return await fetchJson(url, options, {});
+}
+
+// updates status
+export async function updateStatus(reservation_id, status, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/status`;
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: { status: status } }), 
+    signal,
+  };
   return await fetchJson(url, options, {});
 }

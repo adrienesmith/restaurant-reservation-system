@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { postReservation } from "../utils/api";
+import { postReservation, readReservation, putReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-export default function ReservationForm() {
+export default function ReservationForm({ reservation_id }) {
     const initialFormState = {
         first_name: "",
         last_name: "",
@@ -17,6 +17,24 @@ export default function ReservationForm() {
     const [reservationsError, setReservationsError] = useState([]);
    
     const history = useHistory();
+
+    // if "edit" usage of form, load data for reservation_id
+    useEffect(() => {
+        const abortController = new AbortController();
+
+        if (reservation_id) {
+            async function loadReservation() {
+                try {
+                    const reservation = await readReservation(reservation_id, abortController.status);
+                    setForm(reservation);
+                } catch (error) {
+                    setReservationsError([error.message]);
+                }
+            }
+            loadReservation();
+        }
+        return () => abortController.abort();
+    }, [reservation_id]);
 
     const handleChange = ({ target }) => {
 
@@ -64,19 +82,36 @@ export default function ReservationForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const abortController = new AbortController();
-        // POST request
-        async function postData() {
-            try {
-                await postReservation(form, abortController.signal);
-                history.push(`/dashboard?date=${form.reservation_date}`);
-            } catch (error) {
-                setReservationsError([...reservationsError, error.message]);
+        // POST request (new reservation)
+        if (!reservation_id) {
+            async function postData() {
+                try {
+                    await postReservation(form, abortController.signal);
+                    history.push(`/dashboard?date=${form.reservation_date}`);
+                } catch (error) {
+                    setReservationsError([...reservationsError, error.message]);
+                }
+            }
+            // do not send POST request if there is a pending error message
+            if (reservationsError.length === 0) {
+                postData();
             }
         }
-        // do not send POST request if there is a pending error message
-        if (reservationsError.length === 0) {
-            postData();
-        }
+        // PUT request (edit reservation)
+        if (reservation_id) {
+            async function putData() {
+                try {
+                    await putReservation(form, abortController.signal);
+                    history.push(`/dashboard?date=${form.reservation_date}`);
+                } catch (error) {
+                    setReservationsError([...reservationsError, error.message]);
+                }
+            }
+            // do not send PUT request if there is a pending error message
+            if (reservationsError.length === 0) {
+                putData();
+            }
+        } 
     }
     return (
             <>

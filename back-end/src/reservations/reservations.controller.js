@@ -248,7 +248,7 @@ module.exports = {
     hasOnlyValidProperties(...VALID_PROPERTIES), 
     dateIsValid,
     timeIsValid,
-    //peopleIsNumber,
+    peopleIsNumber,
     notTuesday,
     notInPast,
     duringOperatingHours,

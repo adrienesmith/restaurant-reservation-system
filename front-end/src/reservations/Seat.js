@@ -85,6 +85,7 @@ export default function Seat() {
             mobile_number={reservation.mobile_number}
             reservation_time={reservation.reservation_time}
             people={reservation.people}
+            status={reservation.status}
         />
         <h3>Seat</h3>
         <form onSubmit={handleSubmit}>

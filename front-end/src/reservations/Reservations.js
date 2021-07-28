@@ -12,6 +12,7 @@ export default function Reservations({ reservations }) {
             mobile_number={reservation.mobile_number}
             reservation_time={reservation.reservation_time}
             people={reservation.people}
+            status={reservation.status}
         />
     });
 
