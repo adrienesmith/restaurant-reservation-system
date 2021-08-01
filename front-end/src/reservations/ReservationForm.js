@@ -101,6 +101,7 @@ export default function ReservationForm({ reservation_id }) {
         if (reservation_id) {
             async function putData() {
                 try {
+                    setReservationsError([]);
                     await putReservation(form, abortController.signal);
                     history.push(`/dashboard?date=${form.reservation_date}`);
                 } catch (error) {
@@ -117,9 +118,10 @@ export default function ReservationForm({ reservation_id }) {
             <>
             <ErrorAlert error={reservationsError} />
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="form-group">
                     <label htmlFor="first_name">First Name</label>
                     <input 
+                        className="form-control"
                         type="text"
                         name="first_name"
                         id="first_name"
@@ -129,9 +131,10 @@ export default function ReservationForm({ reservation_id }) {
                         value={form.first_name}
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label htmlFor="last_name">Last Name</label>
                     <input 
+                        className="form-control"
                         type="text"
                         name="last_name"
                         id="last_name"
@@ -141,9 +144,10 @@ export default function ReservationForm({ reservation_id }) {
                         value={form.last_name}
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label htmlFor="mobile_number">Mobile Phone Number</label>
                     <input 
+                        className="form-control"
                         type="text"
                         name="mobile_number"
                         id="mobile_number"
@@ -153,10 +157,13 @@ export default function ReservationForm({ reservation_id }) {
                         required="required"
                         value={form.mobile_number}
                     />
+                    <small className="form-text text-muted">Format phone number as ###-###-####</small>
+
                 </div>
-                <div>
+                <div className="form-group">
                     <label htmlFor="reservation_date">Reservation Date</label>
                     <input 
+                        className="form-control"
                         type="date"
                         name="reservation_date"
                         id="reservation_date"
@@ -167,9 +174,10 @@ export default function ReservationForm({ reservation_id }) {
                         value={form.reservation_date}
                     />
                 </div>
-                <div>
+                <div className="form-group">
                 <label htmlFor="reservation_time">Reservation Time</label>
                     <input 
+                        className="form-control"
                         type="time"
                         name="reservation_time"
                         id="reservation_time"
@@ -180,20 +188,20 @@ export default function ReservationForm({ reservation_id }) {
                         value={form.reservation_time}
                     /> 
                 </div>
-                <div>
+                <div className="form-group">
                     <label htmlFor="people">Number of People in Party</label>
                     <input 
-                        type="text"
+                        className="form-control"
+                        type="number"
                         name="people"
                         id="people"
-                        pattern="[0-9]|[0-9][0-9]"
                         onChange={handleChange}
                         required="required"
                         value={form.people}
                     />
                 </div>
-                <button type="submit">Submit</button>
-                <button type="button" onClick={() => history.goBack()}>Cancel</button>
+                <button className="btn btn-dark" type="submit">Submit</button>
+                <button className="btn btn-dark mx-3" type="button" onClick={() => history.goBack()}>Cancel</button>
             </form>
         </>
     );

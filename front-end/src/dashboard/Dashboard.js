@@ -71,28 +71,29 @@ function Dashboard({ date }) {
         <h1>Dashboard</h1>
       </div>
       <ErrorAlert error={dashboardError} />
-      <div className="d-md-flex mb-3">
+      <div className="d-flex justify-content-center my-3">
         <h4 className="mb-0">Reservations for {dateString}</h4>
-        <div>
-          <Link to={`/dashboard?date=${previous(date)}`}>
-            <button className="btn btn-dark" type="button">
-              <span className="oi oi-arrow-thick-left" />
-              &nbsp;Previous Day
-            </button>
-          </Link>
-          <Link to={`/dashboard?date=${today()}`}>
-            <button className="btn btn-dark mx-3" type="button">Today</button>
-          </Link>
-          <Link to={`/dashboard?date=${next(date)}`}>
-            <button className="btn btn-dark" type="button">
-              Next Day&nbsp;
-              <span className="oi oi-arrow-thick-right" />
-            </button>
-          </Link>
-        </div>
+      </div>  
+      <div className="d-flex justify-content-center mt-3">
+        <Link to={`/dashboard?date=${previous(date)}`}>
+          <button className="btn btn-dark" type="button">
+            <span className="oi oi-arrow-thick-left" />
+            &nbsp;Previous Day
+          </button>
+        </Link>
+        <Link to={`/dashboard?date=${today()}`}>
+          <button className="btn btn-dark mx-3" type="button">Today</button>
+        </Link>
+        <Link to={`/dashboard?date=${next(date)}`}>
+          <button className="btn btn-dark" type="button">
+            Next Day&nbsp;
+            <span className="oi oi-arrow-thick-right" />
+          </button>
+        </Link>
       </div>
+
       <div className="d-md-flex mb-3">
-      <div className="mb-3 mx-3"> 
+      <div className="mb-3"> 
         <div className="headingBar my-3 p-2">
             <h2>Reservations</h2>
         </div>

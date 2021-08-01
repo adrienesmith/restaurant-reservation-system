@@ -89,10 +89,11 @@ export default function Seat() {
         />
         <h3>Seat</h3>
         <form onSubmit={handleSubmit}>
-            <div>
+            <div className="form-group">
                 <label htmlFor="table_id">
                     Table Number
                     <select
+                        className="form-control"
                         id="table_id"
                         name="table_id"
                         onChange={handleChange}
@@ -107,8 +108,8 @@ export default function Seat() {
                     </select>
                 </label>
             </div>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => history.goBack()}>Cancel</button>
+            <button className="btn btn-dark" type="submit">Submit</button>
+            <button className="btn btn-dark ml-3" type="button" onClick={() => history.goBack()}>Cancel</button>
         </form>
     </>
     );

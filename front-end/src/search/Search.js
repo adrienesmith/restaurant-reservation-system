@@ -54,9 +54,10 @@ export default function Search() {
             </div>
             <ErrorAlert error={searchError} />
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="form-group">
                     <label htmlFor="mobile_number">Mobile Number</label>
                     <input 
+                        className="form-control"
                         type="text"
                         name="mobile_number"
                         id="mobile_number"
@@ -66,8 +67,8 @@ export default function Search() {
                         value={form.mobile_number}
                     />
                 </div>
-                <button type="submit">Find</button>
-                <button type="button" onClick={() => history.goBack()}>Cancel</button>
+                <button className="btn btn-dark mb-3" type="submit">Find</button>
+                <button className="btn btn-dark mx-3 mb-3" type="button" onClick={() => history.goBack()}>Cancel</button>
             </form>
             {searchResults[0] === "No reservations Found" ? <h4>{searchResults[0]}</h4> : (
                 <Reservations reservations={searchResults} />

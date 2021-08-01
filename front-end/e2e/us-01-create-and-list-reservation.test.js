@@ -1,5 +1,4 @@
 const puppeteer = require("puppeteer");
-console.log("is this running")
 const { setDefaultOptions } = require('expect-puppeteer');
 const fs = require("fs");
 const fsPromises = fs.promises;

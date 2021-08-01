@@ -51,7 +51,8 @@ function timeIsValid(req, res, next) {
 // validation middleware: checks that the value of people is a number
 function peopleIsNumber(req, res, next) {
   const { people } = req.body.data;
-  const partySize = Number.isInteger(people);
+  const peopleToNum = parseInt(people);
+  const partySize = Number.isInteger(peopleToNum);
   if (partySize) {
     return next();
   } else {
