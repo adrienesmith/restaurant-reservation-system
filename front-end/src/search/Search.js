@@ -33,7 +33,7 @@ export default function Search() {
             try {
                 const response = await readByPhone(form.mobile_number, abortController.signal);
                 if (response.length === 0) {
-                    setSearchResults(["No reservations Found"]);
+                    setSearchResults(["No reservations found"]);
                 } else {
                     setSearchResults(response);
                 }
@@ -70,7 +70,7 @@ export default function Search() {
                 <button className="btn btn-dark mb-3" type="submit">Find</button>
                 <button className="btn btn-dark mx-3 mb-3" type="button" onClick={() => history.goBack()}>Cancel</button>
             </form>
-            {searchResults[0] === "No reservations Found" ? <h4>{searchResults[0]}</h4> : (
+            {searchResults[0] === "No reservations found" ? <h4>{searchResults[0]}</h4> : (
                 <Reservations reservations={searchResults} />
             )}
         </>

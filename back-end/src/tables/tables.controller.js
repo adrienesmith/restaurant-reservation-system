@@ -169,7 +169,7 @@ module.exports = {
     list: asyncErrorBoundary(list),
     create: [
         hasProperties(...VALID_PROPERTIES_POST), 
-        hasOnlyValidProperties(...VALID_PROPERTIES_POST), 
+        hasOnlyValidProperties(...VALID_PROPERTIES_POST, "reservation_id"), 
         tableNameLength,
         capacityIsNumber,
         asyncErrorBoundary(create)],

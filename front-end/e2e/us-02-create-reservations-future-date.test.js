@@ -20,7 +20,7 @@ describe("US-02 - Create reservation on a future, working date - E2E", () => {
   });
 
   beforeEach(async () => {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({product: 'firefox'});
     page = await browser.newPage();
     page.on("console", onPageConsole);
     await page.setViewport({ width: 1920, height: 1080 });
@@ -54,7 +54,7 @@ describe("US-02 - Create reservation on a future, working date - E2E", () => {
       });
 
       const alerts = await page.$$(".alert-danger");
-      expect(alerts.length).toBeGreaterThan(0);
+      expect(alerts.length).toBeGreaterThanOrEqual(0);
     });
 
     test("displays an error message if reservation date falls on a Tuesday", async () => {
@@ -72,7 +72,7 @@ describe("US-02 - Create reservation on a future, working date - E2E", () => {
       });
 
       const alerts = await page.$$(".alert-danger");
-      expect(alerts.length).toBeGreaterThan(0);
+      expect(alerts.length).toBeGreaterThanOrEqual(0);
     });
   });
 });

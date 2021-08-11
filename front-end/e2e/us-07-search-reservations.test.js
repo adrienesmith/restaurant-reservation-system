@@ -20,11 +20,11 @@ describe("US-07 - Search reservations - E2E", () => {
   });
 
   beforeEach(async () => {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({product: 'firefox'});
     page = await browser.newPage();
     page.on("console", onPageConsole);
     await page.setViewport({ width: 1920, height: 1080 });
-    await page.goto(`${baseURL}/search`, { waitUntil: "networkidle0" });
+    await page.goto(`${baseURL}/search`, { waitUntil: "load" });
   });
 
   afterEach(async () => {

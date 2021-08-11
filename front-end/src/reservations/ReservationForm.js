@@ -152,13 +152,10 @@ export default function ReservationForm({ reservation_id }) {
                         name="mobile_number"
                         id="mobile_number"
                         placeholder="555-555-5555"
-                        pattern="\d{3}-\d{3}-\d{4}"
                         onChange={handleChange}
                         required="required"
                         value={form.mobile_number}
                     />
-                    <small className="form-text text-muted">Format phone number as ###-###-####</small>
-
                 </div>
                 <div className="form-group">
                     <label htmlFor="reservation_date">Reservation Date</label>
@@ -167,8 +164,6 @@ export default function ReservationForm({ reservation_id }) {
                         type="date"
                         name="reservation_date"
                         id="reservation_date"
-                        placeholder="YYYY-MM-DD"
-                        pattern="\d{4}-\d{2}-\d{2}"
                         onChange={handleChange}
                         required="required"
                         value={form.reservation_date}
@@ -181,8 +176,6 @@ export default function ReservationForm({ reservation_id }) {
                         type="time"
                         name="reservation_time"
                         id="reservation_time"
-                        placeholder="HH:MM"
-                        pattern="[0-9]{2}:[0-9]{2}"
                         onChange={handleChange}
                         required="required"
                         value={form.reservation_time}

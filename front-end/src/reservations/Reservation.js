@@ -38,7 +38,7 @@ export default function Reservation({ reservation_id, first_name, last_name, mob
             {!location.pathname.includes("seat") && status === "booked" ? (
                 <>
                     <Link to={`/reservations/${reservation_id}/seat`}>
-                        <button className="btn btn-dark mr-3" type="button">Seat</button>
+                    <button href={`/reservations/${reservation_id}/seat`} className="btn btn-dark mr-3" type="button">Seat</button>
                     </Link>
                     <Link to={`/reservations/${reservation_id}/edit`}>
                         <button className="btn btn-dark mr-3" type="button">Edit</button>

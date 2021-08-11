@@ -36,7 +36,7 @@ export default function Table({ table, table_name, capacity, status }) {
                 <p>Capacity: {capacity}</p>
                 <p data-table-id-status={table.table_id}>Status: {status}</p>
                 {status === "Free" ? null : (
-                <button className="btn btn-dark" type="button" onClick={finishHandler}>Finish</button>
+                <button data-table-id-finish={table.table_id} className="btn btn-dark" type="button" onClick={finishHandler}>Finish</button>
                 )}
             </div>
         </div>
