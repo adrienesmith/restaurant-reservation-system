@@ -339,7 +339,7 @@ describe("US-08 - Change an existing reservation", () => {
         mobile_number: "800-555-1212",
         reservation_date: "2025-01-01",
         reservation_time: "17:30",
-        people: "2",
+        people: "A",
       };
 
       const response = await request(app)
