@@ -20,7 +20,7 @@ describe("US-02 - Create reservation on a future, working date - E2E", () => {
   });
 
   beforeEach(async () => {
-    browser = await puppeteer.launch({product: 'firefox'});
+    browser = await puppeteer.launch();
     page = await browser.newPage();
     page.on("console", onPageConsole);
     await page.setViewport({ width: 1920, height: 1080 });

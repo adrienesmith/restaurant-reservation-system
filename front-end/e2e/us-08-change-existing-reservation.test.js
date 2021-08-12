@@ -22,7 +22,7 @@ describe("US-08 - Change an existing reservation - E2E", () => {
   beforeAll(async () => {
     await fsPromises.mkdir("./.screenshots", { recursive: true });
     setDefaultOptions({ timeout: 1000 });
-    browser = await puppeteer.launch({product: 'firefox'});
+    browser = await puppeteer.launch();
   });
 
   beforeEach(async () => {
