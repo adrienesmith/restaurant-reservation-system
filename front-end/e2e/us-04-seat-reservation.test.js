@@ -194,7 +194,7 @@ describe("US-04 - Seat reservation - E2E", () => {
         fullPage: true,
       });
 
-      expect(page.url()).toContain("/reservations");
+      expect(page.url()).toContain("/dashboard");
       expect(page).toMatch(/occupied/i);
     });
 
